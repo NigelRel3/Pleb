@@ -1,0 +1,148 @@
+[
+    {
+        "id": "17",
+        "userID": "1",
+        "infoType": "ScreenLayout1",
+        "info": {
+            "panes": {
+                "top": {
+                    "size": "79.0997%",
+                    "panes": {
+                        "Sidebar": {
+                            "size": "24.3045%",
+                            "classToUse": "Sidebar",
+                            "orientation": "left"
+                        },
+                        "Workpanel": {
+                            "size": "75.6955%",
+                            "classToUse": "WorkPanel",
+                            "orientation": "right"
+                        }
+                    },
+                    "orientation": "top"
+                },
+                "Console": {
+                    "size": "20.9003%",
+                    "classToUse": "Console",
+                    "orientation": "bottom"
+                }
+            }
+        }
+    },
+    {
+        "id": "20",
+        "userID": "1",
+        "infoType": "screenLayout",
+        "info": {
+            "panes": {
+                "top": {
+                    "size": "80.1196%",
+                    "panes": {
+                        "sidebar": {
+                            "size": "25.0366%",
+                            "classToUse": "Sidebar",
+                            "orientation": "left"
+                        },
+                        "workpanel": {
+                            "size": "74.9634%",
+                            "classToUse": "WorkPanel",
+                            "orientation": "right"
+                        }
+                    },
+                    "orientation": "top"
+                },
+                "console": {
+                    "size": "19.8804%",
+                    "classToUse": "Console",
+                    "orientation": "bottom"
+                }
+            }
+        }
+    },
+    {
+        "id": "22",
+        "userID": "1",
+        "infoType": "ProjectDetails",
+        "info": {
+            "Description": "Enter Description",
+            "ProjectName": "Test P1a",
+            "DefaultDateFormat": "mm\/dd\/YYYY"
+        }
+    },
+    {
+        "id": "28",
+        "userID": "1",
+        "infoType": "Project",
+        "info": {
+            "menu": "Project",
+            "AddIcon": "glyphicon glyphicon-plus",
+            "Project": {
+                "sub": [],
+                "icon": "glyphicon glyphicon-tasks",
+                "nodes": {
+                    "Resources": {
+                        "icon": "glyphicon glyphicon-folder-close",
+                        "title": "Resources",
+                        "options": {
+                            "add": true,
+                            "open": true
+                        },
+                        "open-icon": "glyphicon glyphicon-folder-open",
+                        "addOptions": {
+                            "classToUse": "Resources",
+                            "base": "Resource",
+                            "id": 1
+                        },
+                        "iconElement": [],
+                        "InitialState": "closed"
+                    },
+                    "Resource Definitions": {
+                        "icon": "glyphicon glyphicon-folder-close",
+                        "title": "Resource Definitions",
+                        "options": {
+                            "add": true,
+                            "open": true
+                        },
+                       "open-icon": "glyphicon glyphicon-folder-open",
+                        "addOptions": {
+                            "classToUse": "ResourceDef",
+                            "base": "ResourceDef",
+                            "id": 1
+                        }
+                    },
+                    "Transfer Definitions": {
+                        "sub": [],
+                        "icon": "glyphicon glyphicon-transfer",
+                        "title": "Transfer Definitions",
+                        "options": {
+                            "add": true,
+                            "open": true
+                        },
+                        "addOptions": {
+                            "classToUse": "TransferDef",
+                            "base": "TransferDef",
+                            "id": 1
+                        }
+                    }
+                },
+                "title": "Project",
+                "options": {
+                    "open": true,
+                    "editable": true,
+                    "clickable": true
+                },
+                "classToUse": "ProjectDetails"
+            },
+            "DeleteIcon": "glyphicon glyphicon-remove"
+        }
+    },
+    {
+        "id": "29",
+        "userID": "1",
+        "infoType": "workpanel",
+        "info": {
+            "tabs": [],
+            "activeTab": "ProjectDetails"
+        }
+    }
+]

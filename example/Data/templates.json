@@ -1,0 +1,126 @@
+[
+    {
+        "id": "1",
+        "name": "Project",
+        "auto": "1",
+        "template": {
+            "menu": "Project",
+            "AddIcon": "glyphicon glyphicon-plus",
+            "Project": {
+                "icon": "glyphicon glyphicon-tasks",
+                "nodes": {
+                    "Resources": {
+                        "icon": "glyphicon glyphicon-folder-close",
+                        "title": "Resources",
+                        "options": {
+                            "add": true
+                        },
+                        "open-icon": "glyphicon glyphicon-folder-open",
+                        "InitialState": "closed"
+                    },
+                    "Resource Definitions": {
+                        "icon": "glyphicon glyphicon-folder-close",
+                        "title": "Resource Definitions",
+                        "options": {
+                            "add": true,
+                            "open": true
+                        },
+                        "open-icon": "glyphicon glyphicon-folder-open"
+                    },
+                    "Transfer Definitions": {
+                        "icon": "glyphicon glyphicon-transfer",
+                        "title": "Transfer Definitions",
+                        "options": {
+                            "add": true,
+                            "open": true
+                        }
+                    }
+                },
+                "title": "A Project",
+                "options": {
+                    "open": true,
+                    "editable": true
+                }
+            },
+            "DeletIcon": "glyphicon glyphicon-remove"
+        }
+    },
+    {
+        "id": "2",
+        "name": "ScreenLayout",
+        "auto": "1",
+        "template": {
+            "panes": {
+                "top": {
+                    "size": "80%",
+                    "panes": {
+                        "sidebar": {
+                            "size": "10%",
+                            "classToUse": "Sidebar",
+                            "orientation": "left"
+                        },
+                        "workpanel": {
+                            "size": "90%",
+                            "classToUse": "WorkPanel",
+                            "orientation": "right"
+                        }
+                    },
+                    "orientation": "top"
+                },
+                "console": {
+                    "size": "20%",
+                    "classToUse": "Console",
+                    "orientation": "bottom"
+                }
+            }
+        }
+    },
+    {
+        "id": "3",
+        "name": "ProjectDetails",
+        "auto": "1",
+        "template": {
+            "Description": "Enter Description",
+            "ProjectName": "Enter Project Name",
+            "DefaultDateFormat": "dd\/mm\/YYYY"
+        }
+    },
+    {
+        "id": "4",
+        "name": "workpanel",
+        "auto": "1",
+        "template": {
+            "tabs": [],
+            "activeTab": null
+        }
+    },
+    {
+        "id": "5",
+        "name": "tab_ProjectDetails",
+        "auto": "1",
+        "template": {
+            "title": "Project 1",
+            "classToUse": "ProjectConfig"
+        }
+    },    
+    {
+        "id": "6",
+        "name": "tab_Resources",
+        "auto": "1",
+        "template": {
+            "title": "Resource",
+            "classToUse": "FileDefinition"
+        }
+    },
+    {
+        "id": "7",
+        "name": "tab_ResourceDef",
+        "auto": "1",
+        "template": {
+            "title": "ResourceDef",
+            "classToUse": "FileDefinition"
+        }
+    }
+    
+    
+]

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="employees1">
+        <column>emp_no</column>
+        <column>birth_date</column>
+        <column>first_name</column>
+        <column>last_name</column>
+        <column>gender</column>
+        <column>hire_date</column>
+        <row>
+            <value>1</value>
+            <value>1980-01-01</value>
+            <value>Fred</value>
+            <value>Smith</value>
+            <value>m</value>
+            <value>2000-01-01</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>1980-01-02</value>
+            <value>Fred2</value>
+            <value>Smith2</value>
+            <value>m</value>
+            <value>2000-01-02</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>1980-01-03</value>
+            <value>Fred3</value>
+            <value>Smith3</value>
+            <value>m</value>
+            <value>2000-01-03</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>1980-01-04</value>
+            <value>Fred4</value>
+            <value>Smith4</value>
+            <value>m</value>
+            <value>2000-01-04</value>
+        </row>
+    </table>
+    <table name="dept_emp2">
+        <column>emp_no</column>
+        <column>dept_no</column>
+        <column>from_date</column>
+        <column>to_date</column>
+        <row>
+            <value>1</value>
+            <value>d001</value>
+            <value>2000-01-01</value>
+            <value>2001-01-01</value>
+        </row>
+        <row>
+            <value>1</value>
+            <value>d002</value>
+            <value>2001-01-01</value>
+            <value>2002-01-01</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>d001</value>
+            <value>2000-01-02</value>
+            <value>2001-01-02</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>d001</value>
+            <value>2000-01-03</value>
+            <value>2001-01-03</value>
+        </row>
+
+    </table>
+</dataset>

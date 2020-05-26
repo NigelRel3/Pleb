@@ -1,0 +1,26 @@
+{
+	"panes": {
+		"top": {
+			"orientation": "top",
+			"size": "80%",
+			"panes": {
+				"sidebar": {
+					"classToUse": "Sidebar",
+					"size": "20%",
+					"orientation": "left"
+				},
+				"workpanel": {
+					"classToUse": "WorkPanel",
+					"orientation": "right",
+					"size": "80%"
+				}
+			}
+		},
+		"console": {
+			"classToUse": "Console",
+			"size": "20%",
+			"orientation": "bottom"
+		}
+	}
+	
+}

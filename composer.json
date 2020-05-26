@@ -1,0 +1,24 @@
+{
+	"name" : "pleb/pleb",
+	"autoload" : {
+		"psr-4" : {
+			"Pleb\\" : "src"
+		}
+	},
+	"require" : {
+		"twig/twig" : "~2.12",
+		"monolog/monolog" : "~2.0",
+		"predis/predis" : "~1.1",
+		"illuminate/database" : "~7.3",
+		"salsify/json-streaming-parser" : "~8.1",
+		"nigelrel3/xml-reader-reg" : "~0.2",
+		"slim/slim" : "~4.4",
+		"slim/psr7" : "~1.0",
+		"tuupola/slim-jwt-auth" : "~3.4",
+		"php-di/php-di" : "~6.0"
+	},
+	"require-dev" : {
+		"phpunit/dbunit" : "~4.0",
+		"phpunit/phpunit" : "7.5.20"
+	}
+}

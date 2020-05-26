@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Pleb UI</title>
+		<link rel="stylesheet" href="ui/resources/pleb.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+	<script src="./ui/resources/Tree.js"></script>
+	<script src="./ui/resources/Tabs.js"></script>
+	<script src="./ui/resources/TabPage.js"></script>
+	<script src="./ui/resources/ProjectConfig.js"></script>
+	<script src="./ui/resources/FileDefinition.js"></script>
+	<script type="text/javascript">
+		Tabs.registerClass ("ProjectConfig", ProjectConfig);
+		Tabs.registerClass ("FileDefinition", FileDefinition);
+	</script>
+	
+	<script src="./ui/resources/User.js"></script>
+	<script type="text/javascript">
+		var user = new User();
+	</script>
+	<body>
+		<div class="fullheight">
+			<div class="topnav">
+				<a href="#home"><span class="glyphicon glyphicon-home" title="Home"></span></a>
+				<div class="topnav-right">
+				    <a href="#settings"><span class="glyphicon glyphicon-cog" title="Configuration"></span></a>
+				    <a href="#login">
+				    	<span id="login" class="glyphicon glyphicon-log-in" title="Login"
+				    		onclick="user.login();"></span>
+				    	<span id="logout" style="display:none;" class="glyphicon glyphicon-log-out" title="Logout"
+				    		onclick="user.logout();"></span>
+				    </a>
+				</div>
+			</div>
+		
+			<div id="workspace"></div>
+		</div>
+		<div class="modal">
+  			<div class="modal-content">
+				<div class="container">
+					<label for="userName"><b>Username</b></label>
+				    <input type="text" placeholder="Enter Username" id="userName" required value="admin" />
+				
+				    <label for="password"><b>Password</b></label>
+				    <input type="password" placeholder="Enter Password" id="password" required value="locked" />
+				
+				    <input id="submitLogin" type="submit" value="Login">
+				    <input id="cancelLogin" type="button" value="Cancel">
+				</div>
+				<span id="loginMessage"></span>
+			</div>
+		</div>
+	<script src="./ui/resources/Workspace.js"></script>
+	<script src="./ui/resources/PanelClass.js"></script>
+	<script src="./ui/resources/Console.js"></script>
+	<script src="./ui/resources/Sidebar.js"></script>
+	<script src="./ui/resources/WorkPanel.js"></script>
+	<script type="text/javascript">
+		window.addEventListener('load', function () {
+			var workspace = new Workspace(document.getElementById("workspace"), user);
+			user.setWorkspace(workspace);
+			workspace.registerClass("Console", Console);
+			workspace.registerClass("Sidebar", Sidebar);
+			workspace.registerClass("WorkPanel", WorkPanel);
+		})
+	</script>
+	</body>
+</html>

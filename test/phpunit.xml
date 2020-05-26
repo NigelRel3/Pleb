@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Model">
+            <directory suffix="Test.php">./core/Model</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="BASEDIR" value="/home/nigel/eclipse-workspace/Pleb/tests" />
+        
+        <env name="DB_HOST" value="172.17.0.4" />
+        <env name="DB_USER" value="Pleb" />
+        <env name="DB_PASSWD" value="RNjjJBkgduyTx7zl" />
+        <env name="DB_DBNAME" value="PlebTest" />
+        <env name="JWT_SECRET" value="1234abc" />
+    </php>
+</phpunit>
