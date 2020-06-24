@@ -48,7 +48,6 @@ use JsonStreamingParser\Parser;
 // TODO Possible to get aggregates to work with sequence file
 //   (i.e. all employee records are sequential, so when it changes SUM()
 //   can return the new value)
-// TODO see if step can return multiple data
 // TODO consider what orderBy and limit do in combination with setSQL
 // done consider what orderBy and limit do in combination with generateFetchSQL
 // done set delimiter and enclosing for CSV
@@ -56,25 +55,13 @@ use JsonStreamingParser\Parser;
 // TODO Model update not done yet
 // TODO Updateable trait?
 // TODO stats
-// TODO be able to use generator as source
 
 // TODO Unit testing make sure expected and actual are the right way round.
 
 $csv = <<<TESTDATA
-<items>
-    <item>
-        <id>11</id><name>abc</name><qty>4</qty><qty2>41</qty2>
-    </item>
-    <item>
-        <id>11</id><name>abc</name><qty>4</qty><qty2>42</qty2>
-    </item>
-    <item>
-        <id>11</id><name>abc</name><qty>4</qty><qty2>43</qty2>
-    </item>
-    <item>
-        <id>12</id><name>abc</name><qty>4</qty><qty2>44</qty2>
-    </item>
-</items>
+id,1,2
+1,2,3
+1,3,3
 TESTDATA;
 
 $csvOutput = <<<TESTDATA
@@ -83,14 +70,21 @@ id,sumqty,sumqty2
 12,4,44
 
 TESTDATA;
-file_put_contents("test.xml", $csv);
 
-$input = (new XML("test.xml"))
-->filter("/items/item")
-->sum(['qty' => 'sumqty', 'qty2' => 'sumqty2'])
-->groupBy(['id'])
-->saveTo(new CSV("testCSVOut.csv"))
-->transfer();
+$subProc = (new Transient())
+	->modify (function(&$data) { $data['2'] += 2;
+		return Entity::CONTINUE_PROCESSING; })
+;
+		
+file_put_contents("test.csv", $csv);
+
+$input = (new CSV("test.csv"))
+
+	->process( function ($v) { return $v['id'] == 1;},
+			$subProc)
+	
+	->saveTo(new CSV("testCSVOut.csv"))
+	->transfer();
 
 $output = file_get_contents("testCSVOut.csv");
 echo ">".$output;

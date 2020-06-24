@@ -1,7 +1,4 @@
 class Tabs	{
-	
-	// TODO for updates check https://stackoverflow.com/a/50862441/1213708
-	
 	constructor( parent, workspace, data, paneName )	{
 		this.parent = parent;
 		this.workspace = workspace;
@@ -12,10 +9,13 @@ class Tabs	{
 	display ()	{
 		this.header = document.createElement('div');
 		this.header.className = "tabs";
+		this.header.style.height = "7%";
 		this.header.style.width = "100%";
 		this.workarea = document.createElement('div');
-		this.workarea.style.height = "100%";
+		this.workarea.style.height = "93%";
 		this.workarea.style.width = "100%";
+		this.workarea.style.overflow = "auto";
+		this.workarea.style['white-space'] = "nowrap";
 		this.parent.appendChild(this.header);
 		this.parent.appendChild(this.workarea);
 		
@@ -27,9 +27,6 @@ class Tabs	{
 	}
 	
 	newTab ( tabName, tab )	{
-		
-		console.log(tabName);
-		
 		this.data.tabs[tabName] = tab;
 		this.addTab( tabName );
 		this.clickTab( tabName );
@@ -42,8 +39,9 @@ class Tabs	{
 		this.data.tabs[tab].closeTab = document.createElement('span');
 		this.data.tabs[tab].closeTab.className = "closetab glyphicon glyphicon-remove";
 		this.data.tabs[tab].tag.appendChild(this.data.tabs[tab].closeTab);
-		this.data.tabs[tab].closeTab.onclick = function()	{
-			this.closeTab(tab, this.data.tabs[tab]);
+		this.data.tabs[tab].closeTab.onclick = function(event)	{
+			this.closeTab(tab);
+			event.stopPropagation();
 		}.bind(this);
 		
 		this.data.tabs[tab].div = document.createElement('div');
@@ -57,7 +55,6 @@ class Tabs	{
 			this.clickTab(tab);
 		}.bind(this);
 		// load class for tab into workarea
-		// console.log(this.data.tabs[tab].classToUse);
 		this.data.tabs[tab].handler = 
 			new Tabs.classes[this.data.tabs[tab].classToUse]
 					(this.data.tabs[tab].div, this.workspace, tab);
@@ -77,15 +74,18 @@ class Tabs	{
 		return this.data.tabs[tabName] != null;
 	}
 	
-	closeTab ( tab, tabClosing )	{
-		// TODO If tab is active, need to move this on if possible
+	closeTab ( tab )	{
+		let status = this.data.tabs[tab].div.style.display;
 		this.removeElement(this.data.tabs[tab].tag);
 		this.removeElement(this.data.tabs[tab].div);
 		this.removeElement(this.data.tabs[tab].closeTab);
-		console.log(this.data.tabs);
 		delete this.data.tabs[tab];
-		console.log(this.data.tabs);
 		this.workspace.getUser().setUserData( this.paneName+"_details", this.data );
+		if ( status == "block" && Object.keys(this.data.tabs).length > 0 )	{
+			let newTab = Object.keys(this.data.tabs)[0];
+			// Activate first tab
+			this.data.tabs[newTab].div.style.display = "block";
+		}
 	}
 	
 	removeElement ( e )	{

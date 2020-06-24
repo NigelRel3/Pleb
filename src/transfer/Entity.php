@@ -251,10 +251,6 @@ abstract class Entity  {
         return $this;
     }
     
-    public function getShutdown()   {
-        return false;    
-    }
-    
     public function setLimit( int $limit, int $offset = 0 )   {
         $this->methodChain[] = function ( $data ) use ($limit, $offset) {
             $return = self::CONTINUE_PROCESSING;
@@ -303,25 +299,24 @@ abstract class Entity  {
         return $this;
     }
     
-    // -------------------------------------------------------------
-    protected function getTraits($class)   {
-        $traits = [];
-        
-        // Get traits of all parent classes
-        do {
-            $traits = array_merge(class_uses($class), $traits);
-        } while ($class = get_parent_class($class));
-        
-        return array_unique($traits);
+    public function process ( callable $filter, Entity $subProcess )	{
+    	
+    	
+    	// TODO ?????????????????????????????????????????????????
+    	/**
+    	 * Work out how can use a process as a sub routine
+    	 */
+    	
     }
     
+    // -------------------------------------------------------------
     public const CONTINUE_PROCESSING = 0;
     public const SKIP_PROCESSING = 1;
     public const END_PROCESSING = 2;
  
     protected $recordNumber = 0;
     
-    public function push ( $data  )  {
+    public function push ( $data )  {
         if ( $this->importFormat != null )  {
             $data = ($this->importFormat)( $data );
         }
@@ -366,6 +361,10 @@ abstract class Entity  {
         }
     }
     
+    public function getShutdown()   {
+    	return false;
+    }
+    
     protected function processFilter ( $data, array $filter ) : array {
         $output = [];
         foreach ( $filter as $key ) {
@@ -373,6 +372,17 @@ abstract class Entity  {
         }
         
         return $output;
+    }
+    
+    protected function getTraits($class)   {
+    	$traits = [];
+    	
+    	// Get traits of all parent classes
+    	do {
+    		$traits = array_merge(class_uses($class), $traits);
+    	} while ($class = get_parent_class($class));
+    	
+    	return array_unique($traits);
     }
     
     //     abstract public function getStats() : Stats;

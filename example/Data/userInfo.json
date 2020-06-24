@@ -36,15 +36,15 @@
         "info": {
             "panes": {
                 "top": {
-                    "size": "80.1196%",
+                    "size": "76.3827%",
                     "panes": {
                         "sidebar": {
-                            "size": "25.0366%",
+                            "size": "25.1098%",
                             "classToUse": "Sidebar",
                             "orientation": "left"
                         },
                         "workpanel": {
-                            "size": "74.9634%",
+                            "size": "74.8902%",
                             "classToUse": "WorkPanel",
                             "orientation": "right"
                         }
@@ -52,7 +52,7 @@
                     "orientation": "top"
                 },
                 "console": {
-                    "size": "19.8804%",
+                    "size": "23.6173%",
                     "classToUse": "Console",
                     "orientation": "bottom"
                 }
@@ -81,57 +81,130 @@
                 "icon": "glyphicon glyphicon-tasks",
                 "nodes": {
                     "Resources": {
+                        "sub": [],
                         "icon": "glyphicon glyphicon-folder-close",
+                        "nodes": {
+                            "Resource17": {
+                                "sub": [],
+                                "title": "NewFileQ",
+                                "labelLI": [],
+                                "options": {
+                                    "editable": true,
+                                    "clickable": true,
+                                    "deletable": true
+                                },
+                                "editIcon": [],
+                                "labelText": [],
+                                "classToUse": "Resources",
+                                "deleteIcon": [],
+                                "pathToNode": "Project.Resources.Resource17",
+                                "iconElement": null
+                            },
+                            "Resource18": {
+                                "sub": [],
+                                "title": "NewFileA",
+                                "labelLI": [],
+                                "options": {
+                                    "editable": true,
+                                    "clickable": true,
+                                    "deletable": true
+                                },
+                                "editIcon": [],
+                                "labelText": [],
+                                "classToUse": "Resources",
+                                "deleteIcon": [],
+                                "pathToNode": "Project.Resources.Resource18",
+                                "iconElement": null
+                            }
+                        },
                         "title": "Resources",
+                        "addIcon": [],
+                        "labelLI": [],
                         "options": {
                             "add": true,
                             "open": true
                         },
+                        "labelText": [],
                         "open-icon": "glyphicon glyphicon-folder-open",
                         "addOptions": {
-                            "classToUse": "Resources",
+                            "id": 19,
                             "base": "Resource",
-                            "id": 1
+                            "classToUse": "Resources"
                         },
+                        "pathToNode": "Project.Resources",
                         "iconElement": [],
                         "InitialState": "closed"
                     },
                     "Resource Definitions": {
+                        "sub": [],
                         "icon": "glyphicon glyphicon-folder-close",
                         "title": "Resource Definitions",
+                        "addIcon": [],
+                        "labelLI": [],
                         "options": {
                             "add": true,
-                            "open": true
+                            "open": false
                         },
-                       "open-icon": "glyphicon glyphicon-folder-open",
+                        "labelText": [],
+                        "open-icon": "glyphicon glyphicon-folder-open",
                         "addOptions": {
-                            "classToUse": "ResourceDef",
+                            "id": 1,
                             "base": "ResourceDef",
-                            "id": 1
-                        }
+                            "classToUse": "ResourceDef"
+                        },
+                        "pathToNode": "Project.Resource Definitions",
+                        "iconElement": []
                     },
                     "Transfer Definitions": {
                         "sub": [],
                         "icon": "glyphicon glyphicon-transfer",
+                        "nodes": {
+                            "TransferDef2": {
+                                "sub": [],
+                                "title": "New",
+                                "labelLI": [],
+                                "options": {
+                                    "editable": true,
+                                    "clickable": true,
+                                    "deletable": true
+                                },
+                                "editIcon": [],
+                                "labelText": [],
+                                "classToUse": "TransferDef",
+                                "deleteIcon": [],
+                                "pathToNode": "Project.Transfer Definitions.TransferDef2",
+                                "iconElement": null
+                            }
+                        },
                         "title": "Transfer Definitions",
+                        "addIcon": [],
+                        "labelLI": [],
                         "options": {
                             "add": true,
-                            "open": true
+                            "open": false
                         },
+                        "labelText": [],
                         "addOptions": {
-                            "classToUse": "TransferDef",
+                            "id": 3,
                             "base": "TransferDef",
-                            "id": 1
-                        }
+                            "classToUse": "TransferDef"
+                        },
+                        "pathToNode": "Project.Transfer Definitions",
+                        "iconElement": []
                     }
                 },
                 "title": "Project",
+                "labelLI": [],
                 "options": {
                     "open": true,
                     "editable": true,
                     "clickable": true
                 },
-                "classToUse": "ProjectDetails"
+                "editIcon": [],
+                "labelText": [],
+                "classToUse": "ProjectDetails",
+                "pathToNode": "Project",
+                "iconElement": []
             },
             "DeleteIcon": "glyphicon glyphicon-remove"
         }
@@ -143,6 +216,145 @@
         "info": {
             "tabs": [],
             "activeTab": "ProjectDetails"
+        }
+    },
+    {
+        "id": "32",
+        "userID": "1",
+        "infoType": "Project_details",
+        "info": {
+            "Error": "Not found:Project_details",
+            "Description": "Desc",
+            "ProjectName": "Test P1aa",
+            "DefaultDateFormat": "mm\/dd\/YYYY"
+        }
+    },
+    {
+        "id": "35",
+        "userID": "1",
+        "infoType": "workpanel_details",
+        "info": {
+            "tabs": [],
+            "activeTab": "Project"
+        }
+    },
+    {
+        "id": "102",
+        "userID": "1",
+        "infoType": "Resource16_details",
+        "info": {
+            "CSVSep": ",",
+            "fieldDefs": [
+                {
+                    "name": "column 1",
+                    "type": "STRING"
+                },
+                {
+                    "name": "col2",
+                    "type": "STRING"
+                },
+                {
+                    "name": "col3",
+                    "type": "STRING"
+                },
+                {
+                    "name": "col4",
+                    "type": "DATE"
+                }
+            ],
+            "Description": "Description",
+            "ResourceType": "CSV",
+            "resourceName": "Enter Resource Name"
+        }
+    },
+    {
+        "id": "112",
+        "userID": "1",
+        "infoType": "Resource17_details",
+        "info": {
+            "CSVSep": ",",
+            "fieldDefs": [
+                {
+                    "name": "column 1",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col2",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col3",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col4",
+                    "type": "DATE",
+                    "format": "dd\/mm\/yyyy"
+                }
+            ],
+            "Description": "Description",
+            "ResourceType": "CSV",
+            "resourceName": "C"
+        }
+    },
+    {
+        "id": "113",
+        "userID": "1",
+        "infoType": "Resource18_details",
+        "info": {
+            "CSVSep": ",",
+            "fieldDefs": [
+                {
+                    "name": "column 1",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col2",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col3",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col4",
+                    "type": "STRING",
+                    "format": ""
+                },
+                {
+                    "name": "col next",
+                    "type": "STRING",
+                    "format": ""
+                }
+            ],
+            "Description": "Description",
+            "ResourceType": "CSV",
+            "resourceName": "Res A"
+        }
+    },
+    {
+        "id": "114",
+        "userID": "1",
+        "infoType": "TransferDef1_details",
+        "info": {
+            "Error": "Not found:TransferDef"
+        }
+    },
+    {
+        "id": "123",
+        "userID": "1",
+        "infoType": "TransferDef2_details",
+        "info": {
+            "steps": [],
+            "inputs": [],
+            "Description": "Description",
+            "resourceName": "Transfer"
         }
     }
 ]

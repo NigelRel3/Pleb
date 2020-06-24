@@ -25,12 +25,17 @@ class Sidebar extends PanelClass {
 		this.workspace.select(label, data.classToUse);
 	}
 	
-	addClicked( label, data )	{
-		console.log("Add " + data.title);
-		// Create new item, need to generate name		
-//		console.log(data.nodes);
+	addClicked( nodeName, data )	{
+		console.log("new node="+nodeName);
+		console.log(data);
 		
-		// TODO open tab for new item
+		// Fetch user data template
+		this.workspace.getUser().fetchUserData(
+			data.addOptions.classToUse, function(template)	{
+				if ( template == null || template.error == null )	{
+					this.workspace.getUser().setUserData(nodeName + "_details", template);
+				}
+		 }.bind(this));
 	}
 	
 	deleteClicked( data )	{

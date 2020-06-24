@@ -2,7 +2,7 @@ class ProjectConfig extends TabPage {
 	display(data)	{
 		this.data = data;
 		this.displayDataInTab();
-		document.getElementById("saveProjectConfig").onclick = this.saveTab.bind(this)
+		document.getElementById("saveProjectConfig").onclick = this.saveTab.bind(this);
 			
 	}
 	

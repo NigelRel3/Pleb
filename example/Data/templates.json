@@ -102,7 +102,7 @@
             "title": "Project 1",
             "classToUse": "ProjectConfig"
         }
-    },    
+    },
     {
         "id": "6",
         "name": "tab_Resources",
@@ -118,9 +118,39 @@
         "auto": "1",
         "template": {
             "title": "ResourceDef",
-            "classToUse": "FileDefinition"
+            "classToUse": "TransferDef"
+        }
+    },
+    {
+        "id": "8",
+        "name": "Resources",
+        "auto": "1",
+        "template": {
+            "CSVSep": ",",
+            "fieldDefs": [],
+            "Description": "Description",
+            "ResourceType": "CSV",
+            "resourceName": "Resource Name"
+        }
+    },
+    {
+        "id": "9",
+        "name": "TransferDef",
+        "auto": "1",
+        "template": {
+            "steps": [],
+            "inputs": [],
+            "Description": "Description",
+            "resourceName": "Transfer"
+        }
+    },
+    {
+        "id": "10",
+        "name": "tab_TransferDef",
+        "auto": "1",
+        "template": {
+            "title": "ResourceDef",
+            "classToUse": "TransferDef"
         }
     }
-    
-    
 ]

@@ -11,9 +11,11 @@
 	<script src="./ui/resources/TabPage.js"></script>
 	<script src="./ui/resources/ProjectConfig.js"></script>
 	<script src="./ui/resources/FileDefinition.js"></script>
+	<script src="./ui/resources/TransferDef.js"></script>
 	<script type="text/javascript">
 		Tabs.registerClass ("ProjectConfig", ProjectConfig);
 		Tabs.registerClass ("FileDefinition", FileDefinition);
+		Tabs.registerClass ("TransferDef", TransferDef);
 	</script>
 	
 	<script src="./ui/resources/User.js"></script>
@@ -66,5 +68,96 @@
 			workspace.registerClass("WorkPanel", WorkPanel);
 		})
 	</script>
+	
+	<div id="trHTMLDef" class="tabcontainer" style="display: none">
+		<form>
+			<div>
+				<div class="resourceDefLeft">
+					<label for="resourceName">Resource Name</label>
+			    	<input type="text" placeholder="Enter Resource Name" id="resourceName" 
+			    			data-id="resourceName" required>
+					<br />
+			    	<label for="rfdescription">Description</label>
+			    	<textarea id="rfdescription" rows="4" cols="40" 
+			    			data-id="Description"></textarea>
+					<br />
+		    		<button data-id="saveResourceDefinition" type="submit">Save</button>
+		    	</div>
+		    	<div>
+				    <div class="resourceDefRight">
+				    	<div data-id="fileSample">
+				    		<p>Add sample file</p>
+				    		<input type="file" data-id="fileElem" />
+				    	</div>
+				    	<label for="sampledata">Sample Data</label>
+				 		<div data-id="sampledata" class="dataDisplay">No data to show</div>
+				    </div>
+			    </div>
+			    <div class="clearfix"></div>
+			    <br />
+			    <div>
+			    	<label for="fdResourceType">Source Type</label>
+			    	<select data-id="ResourceType">
+			    		<option value="CSV">CSV</option>
+			    		<option value="JSON">JSON</option>
+			    		<option value="XML">XML</option>
+			    		<option value="Database">Database</option>
+			    		<option value="Table">Table</option>
+			    	</select>
+			    	
+				    <br />
+				    <br />
+			    	<div data-id="fdResourceType_CSV" style="display: none;">
+						<label for="CSVSep">Separator</label>
+				    	<input type="text" data-id="CSVSep" required size="4" value=",">
+				    	<br />
+				    	<br />
+			    	</div>
+			    	<div data-id="fdResourceType_JSON" style="display: none;">
+			    		JSON
+			    	</div>
+			    	<div data-id="fdResourceType_XML" style="display: none;">
+			    		XML
+			    	</div>
+			    	<div data-id="fdResourceType_Database" style="display: none;">
+			    	    Database
+			    	</div>
+			    	<div data-id="fdResourceType_Table" style="display: none;">
+						Table
+			    	</div>
+			    	<div class="dataDisplay">
+		    			<p>Field definitions:</p>
+			    		<table data-id="fieldDefs">
+			    			<thead>
+				    			<tr>
+				    				<th>Name</th>
+				    				<th>Type</th>
+				    				<th>Format</th>
+			    				</tr>
+		    				</thead>
+		    				<tbody data-id="defTableBody">
+		    					<tr data-id="defTemplate" style="display:none">
+			    					<td><input data-id="name" name="name" type="text" 
+			    							maxlength="30" required="required"/>
+			    					</td>
+			    					<td><select data-id="type" name="type" required="required">
+			    							<option value="INT">INT</option>
+			    							<option value="STRING">STRING</option>
+			    							<option value="DATE">DATE</option>
+			    							<option value="ENUM">ENUM</option>
+			    						</select>
+			    					</td>
+			    					<td><input data-id="format" name="format" type="text" 
+			    							maxlength="30" />
+	    							</td>
+			    				</tr>
+		    				</tbody>
+			    		</table>
+			    	</div>
+			    </div>
+			</div>
+	    </form>
+	</div>
+	
 	</body>
 </html>

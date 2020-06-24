@@ -8,6 +8,10 @@ use Pleb\transfer\Entity;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
+class C1 extends CSV    {
+    public function __call( $t1, $t2) {}
+};
+
 class CSVTest extends TestCase   {
     public function testModify () {
         $csv = <<<TESTDATA

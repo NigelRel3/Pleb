@@ -118,7 +118,7 @@ class Tree {
 			node.addIcon.className = "list-adjust "+this.addIcon;
 			node.labelLI.appendChild(node.addIcon);
 			node.addIcon.onclick = function() {
-				this.addClicked(label, node);
+				this.addClicked(node);
 			}.bind(this);
 		}
 		if ( node.options.deletable == true )	{
@@ -131,24 +131,25 @@ class Tree {
 		}
 	}
 	
-	addClicked (label,  node )	{
-		if ( node.nodes == null )	{
-			node.nodes = {};
-		}
-		
+	addClicked ( node )	{
 		let newNodeName = node.addOptions.base + node.addOptions.id;
 		node.addOptions.id++;
-		console.log(newNodeName);
 		
-		node.nodes[newNodeName] = {
-			title: "NewFile",
-			options: {
-				clickable: true,
-				deletable: true,
-				editable: true
-			},
-			classToUse: node.addOptions.classToUse
+		let newNode = {
+				title: "New",
+				options: {
+					clickable: true,
+					deletable: true,
+					editable: true
+				},
+				classToUse: node.addOptions.classToUse
 		};
+		if ( node.nodes == null || Array.isArray(node.nodes) )	{
+			node.nodes = { [newNodeName]: newNode};
+		}
+		else	{
+			node.nodes[newNodeName] = newNode;
+		}
 		
 		// Add into structure
 		this.buildDisplay(node.sub, node.nodes[newNodeName], newNodeName,
@@ -160,7 +161,7 @@ class Tree {
 		this.editLabel ( node.nodes[newNodeName] );
 		
 		// Pass on to original callback
-		this.addCallback(label, node);
+		this.addCallback(newNodeName, node);
 	}
 	
 	deleteClicked(label, node)	{
@@ -170,8 +171,8 @@ class Tree {
 		console.log(path);
 		let nodeRoute = this.structure[path[0]];
 		for ( let i = 1; i < path.length-1; i++ )	{
-			console.log(nodeRoute);
-			console.log(path[i]);
+//			console.log(nodeRoute);
+//			console.log(path[i]);
 			nodeRoute = nodeRoute.nodes[path[i]];
 		}
 		console.log(nodeRoute);

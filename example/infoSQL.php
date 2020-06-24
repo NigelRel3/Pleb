@@ -3,7 +3,7 @@
 $mode="Export";
 $mode="Import";
 $table="userInfo";
-//$table="templates";
+$table="templates";
 try
 {
     $db = new PDO("mysql:host=172.17.0.4;dbname=Pleb",
