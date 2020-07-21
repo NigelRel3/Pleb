@@ -5,11 +5,14 @@ use Pleb\transfer\Entity;
 use Pleb\transfer\Lookup;
 use Pleb\transfer\Sink;
 use Pleb\transfer\Source;
+use Pleb\transfer\Field\DateField;
 use Pleb\transfer\Field\Field;
+use Pleb\transfer\Updateable;
 
 class Model extends Entity {
     use Source;
     use Sink;
+    use Updateable;
     use Lookup;
     
     /**
@@ -33,28 +36,42 @@ class Model extends Entity {
     protected $dblimit = null;
     protected $dboffset = null;
     
+    /**
+     * @param string $name
+     * @param string $type
+     * @throws \InvalidArgumentException
+     * @return Field
+     */
     protected function decodeDataType ( string $name, string $type ) : Field  {
-        // Decode data types...
-        if ( substr($type, 0, 3) == 'int' )   {
-            $type = Field::INT();
-        }
-        elseif ( substr($type, 0, 7) == 'varchar' )   {
-            $type = Field::STRING();
-        }
-        elseif ( $type == 'date' )   {
-            $type = Field::Date("Y-m-d");
-        }
-        elseif ( substr($type, 0, 4) == 'enum' )   {
-            $type = Field::STRING();
-        }
-        else    {
+    	if ( ($fieldType = Field::getFieldFromType($type)) === false )	{
             throw new \InvalidArgumentException("Model::decodeDataType can't handle {$name} of type {$type}");
         }
         
-        return $type;
+        return $fieldType;
     }
     
-    public function loadColumns ()   {
+    public function create()	{
+    	$def = 'create table `'.$this->name.'` ('.PHP_EOL;
+    	foreach ( $this->fields as $name => $column )   {
+    		$def .= "    `".$name.'` '.$column->getDBDefinition().' DEFAULT NULL,'.PHP_EOL;
+    	}
+    	
+    	$def = rtrim($def, ",".PHP_EOL).")";
+    	
+    	$this->db->query($def);
+    	
+    	return $this;
+    }
+    
+    public function drop()	{
+    	$def = 'drop table if exists `'.$this->name.'`';
+    	
+    	$this->db->query($def);
+    	
+    	return $this;
+    }
+    
+    protected function loadColumns ()   {
         if ( $this->db == null ) {
             throw new \RuntimeException("Database not configured");
         }
@@ -119,25 +136,51 @@ class Model extends Entity {
     }
     
     protected $query = null;
+    protected $queryInsert = null;
+    protected $queryUpdate = null;
     
-    public function open ( string $mode )   {
+    public function open ( string $mode ) : void   {
         try {
-            if ( $mode == "r" ) {
+        	if ( $mode == Entity::INPUT ) {
                 $this->generateReadSQL();
             }
-            else    {
+            else	{
                 $this->generateWriteSQL();
+            	$this->generateUpdateSQL();
             }
         }
         catch ( \PDOException $e )  {
             $this->query = null;
-            throw new \RuntimeException("Open source failed - {$e->getMessage()}");
+           	throw new \RuntimeException("Open source failed - {$e->getMessage()}",
+           			Entity::OPEN_FAILED);
         }
     }
-
+    
+    protected function buildEntity ( array $fields )	{
+    	// Default date formats
+    	$localFields = $fields;
+    	foreach ( $localFields as $key => $field )	{
+    		if ( $field instanceof DateField )	{
+    			$lField = clone($field);
+    			$lField->setFormat(["Y-m-d"]);
+    			$localFields[$key] = $lField;
+    		}
+    	}
+    	$this->setFields($localFields);
+    	$this->create();
+    	// Retry
+    	$this->open(Entity::OUTPUT);
+    	
+    }
+    
     protected function generateReadSQL()    {
         // If SQL statement not already set (though setSQL())
         if ( $this->sqlStatement == null )  {
+        	
+        	if ( empty($this->fields))	{
+        		$this->loadColumns();
+        	}
+        	
             // Build SQL statement
             $sql = "SELECT `".implode("`, `", array_keys($this->fields)).
                     "` FROM `{$this->name}`";
@@ -166,17 +209,34 @@ class Model extends Entity {
     }
 
     protected function generateWriteSQL()    {
-        // Build SQL statement
+    	if ( empty($this->fields) )	{
+    		$this->loadColumns();
+    	}
+    	// Build SQL statement
         $sql = "INSERT INTO `{$this->name}`(`".
                 implode("`, `", array_keys($this->fields))."`)".
                 " VALUES (:".implode(", :", array_keys($this->fields)).")";
         
-//         echo $sql;
-        
-        $this->query = $this->db->prepare($sql);
+        $this->queryInsert = $this->db->prepare($sql);
     }
     
-
+    protected function generateUpdateSQL()    {
+    	if ( empty($this->fields))	{
+    		$this->loadColumns();
+    	}
+    	// Build SQL statement
+    	$sql = "UPDATE `{$this->name}` SET ";
+    	foreach ( array_keys($this->fields) as $field )	{
+    		$sql .= "`{$field}` = :{$field}, ";
+    	}
+    	$sql = rtrim( $sql, ", ");
+    	if ( !empty($this->where) )	{
+   			$sql .= " WHERE {$this->where}";
+    	}
+    	
+      	$this->queryUpdate = $this->db->prepare($sql);
+    }
+    
     protected function read() {
         if ( $this->query == null ) {
             throw new \RuntimeException("Source not open to read");
@@ -186,14 +246,30 @@ class Model extends Entity {
         return $data;
     }
 
-    public function write ( array $data )   {
-        if ( $this->query == null ) {
+    public function write ( array $data, bool $insert = true )   {
+    	if ( $this->queryInsert == null ) {
             throw new \RuntimeException("Source not open");
         }
         if ( $this->exportFormat != null )  {
             $data = ($this->exportFormat)($data );
         }
-        $this->query->execute($data);
+        if ( $data )	{
+        	try	{
+	        	if ( $insert )	{
+	        		$this->queryInsert->execute($data);
+	        	}
+	        	else	{
+	        		$this->queryUpdate->execute($data);
+	        	}
+        	}
+        	catch ( \PDOException $e )	{
+        		if ( $this->errorFile )	{
+	        		$errorData = $data;
+	        		$errorData['#Message'] = $e->getMessage();
+	        		$this->errorFile->push($errorData);
+        		}
+        	}
+        }
     }
     
     public function close() : void   {}
@@ -205,14 +281,17 @@ class Model extends Entity {
         return $this;
     }
     
-    protected function configure()  {}
+    //protected function configure()  {}
     
     protected $fetchQuery = null;
     
     protected function generateFetchSQL()    {
         // If SQL statement not already set (though setSQL())
         if ( $this->fetchQuery == null )  {
-            // Build SQL statement
+        	if ( empty($this->fields))	{
+        		$this->loadColumns();
+        	}
+        	// Build SQL statement
             $sql = "SELECT `".implode("`, `", array_keys($this->fields)).
                 "` FROM `{$this->name}`";
             if ( !empty($this->indexBy) )  {
@@ -250,26 +329,4 @@ class Model extends Entity {
         return $data;
     }
     
-//     /**
-//      * @return bool
-//      */
-//     public function  update (): bool  {
-//         $updated = false;
-//         try {
-//             $update = $this->db->prepare(static::$updateSQL);
-//             $data = $this->data;
-//             // Add in loaded keys to binds...
-//             foreach ( $this->loadedKey as $key=>$value )    {
-//                 $data[$key."_old"] = $value;
-//             }
-//             $update->execute($data);
-//             $updated = true;
-//         }
-//         catch ( \PDOException $e )  {
-//             $this->log("Error in update ".static::class."-".$e);
-//         }
-        
-//         return $updated;
-//     }
-
 }

@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="true"
-         stopOnFailure="false">
-    <testsuites>
-        <testsuite name="Model">
-            <directory suffix="Test.php">./core/Model</directory>
-        </testsuite>
-    </testsuites>
-    <php>
-        <env name="BASEDIR" value="/home/nigel/eclipse-workspace/Pleb/tests" />
-        
-        <env name="DB_HOST" value="172.17.0.4" />
-        <env name="DB_USER" value="Pleb" />
-        <env name="DB_PASSWD" value="RNjjJBkgduyTx7zl" />
-        <env name="DB_DBNAME" value="PlebTest" />
-        <env name="JWT_SECRET" value="1234abc" />
-    </php>
+<phpunit backupGlobals="false" backupStaticAttributes="false"
+	colors="true" convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true" convertWarningsToExceptions="true"
+	processIsolation="true" stopOnFailure="false">
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../src/transfer</directory>
+			<file>/path/to/file</file>
+			<exclude>
+				<directory suffix=".php">../vendor</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+	<!-- <logging> -->
+	<!-- <log type="coverage-html" target="../log" lowUpperBound="35" -->
+	<!-- highLowerBound="70"/> -->
+	<!-- </logging> -->
+	<testsuites>
+		<testsuite name="Model">
+			<directory suffix="Test.php">./core/Model</directory>
+		</testsuite>
+		<testsuite name="UI">
+			<directory suffix="Test.php">./ui</directory>
+		</testsuite>
+		<testsuite name="transfer">
+			<directory suffix="Test.php">./transfer</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<env name="BASEDIR"
+			value="/home/nigel/eclipse-workspace/Pleb/tests" />
+
+		<env name="DB_HOST" value="172.17.0.4" />
+		<env name="DB_USER" value="Pleb" />
+		<env name="DB_PASSWD" value="RNjjJBkgduyTx7zl" />
+		<env name="DB_DBNAME" value="PlebTest" />
+		<env name="JWT_SECRET" value="1234abc" />
+	</php>
 </phpunit>

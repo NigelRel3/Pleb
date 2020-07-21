@@ -10,16 +10,9 @@ class XML extends Entity  {
     use Source;
     use Sink;
     
-    private $fileName = null;
     private $fileHandle = null;
     
     protected $filter = null;
-    
-    public function setFileName( string $fileName )   {
-        $this->fileName = $fileName;
-    }
-    
-    protected function configure()  {}
     
     public function filter( $filter )   {
         if ( is_string($filter) )    {
@@ -52,7 +45,7 @@ class XML extends Entity  {
         return $out;
     }
     
-    public function open ( string $mode )   {
+    public function open ( string $mode ) : void   {
         if ( $this->fileHandle === null )   {
             if ( $mode == "r" && !file_exists($this->name) )    {
                 throw new \RuntimeException("File {$this->name} not found.");

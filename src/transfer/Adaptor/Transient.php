@@ -14,7 +14,7 @@ class Transient extends Entity  {
     
     protected function configure()  {}
     
-    public function open ( string $mode )   {
+    public function open ( string $mode ) : void   {
         if ( $mode == "r" ) {
             reset($this->data);
         }

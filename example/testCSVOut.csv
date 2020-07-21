@@ -1,3 +1,4 @@
-id,sumqty,sumqty2
-11,12,126
-12,4,44
+order,productid,product_name,qty
+1001,7,,2
+1002,3,abc3,2
+1003,5,,2

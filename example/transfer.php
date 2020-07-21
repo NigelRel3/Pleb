@@ -16,10 +16,62 @@ use Pleb\transfer\Adaptor\Model;
 use Pleb\transfer\Adaptor\Transient;
 use JsonStreamingParser\Listener\RegexListener;
 use JsonStreamingParser\Parser;
+use Pleb\transfer\Adaptor\Generator;
+
+// wh zl8xpDxtYqHw1VGt
+
+// TODO test something like an employee load
+// TODO check how joins are used in Model
+// TODO can create table be called automatically? $e->getCode() === '42S02'
+// TODO Elequent
+// TODO logging at each stage
+// TODO Split fields out to own classes and complete types
+// TODO code EnumField including Model field types
+
+// Specific issues
+
+// TODO Should an update be OK without a WHERE clause?
+// TODO Model group by and sum as native SQL
+// TODO XML - partial
+// TODO Order by for non database can't work with short definition as
+//    no columns are defined.  Perhaps some way of delaying the check?
+// TODO consider what orderBy and limit do in combination with setSQL
 
 
+// Overall architecture
 
+// TODO look into what count should do
+// TODO database transaction and performance
+// TODO can move the format steps into the method chain?
+// TODO check methods have correct access level.
+// TODO split out some Model specific stuff to a ModelUtils class
+//		things like create
+// TODO set DB as static for models?
+// TODO flag options (create/drop) as static settings.
+// TODO parameters?
+// TODO some performance testing
+// TODO How to manage hierarchical JSON & XML
+// TODO ability to turn off validation - affect on performance
+// TODO Possible to get aggregates to work with sequence file
+//   (i.e. all employee records are sequential, so when it changes SUM()
+//   can return the new value)
+// TODO stats
+// TODO test shutdown chain is setup properly
+// TODO direct load of CSV to Model
+//		https://stackoverflow.com/questions/11448307/importing-csv-data-using-php-mysql
 
+// done add to testing of things like field validation with empty fields etc.
+// 			If field is missing - is this valid?
+//			Added ability to define nullable fields
+// done test generator
+// done Generator type class for source data.
+// done test how database errors are processed
+// done can remove loadColumns() and call it automatically?
+// done test for exceptions thrown and other errors
+// done consider if can be converted into generator to allow
+//      data to be passed onto the user.
+//      superceeded by sub streams
+// done consider allowing iteration over dataset (may just be Transient)
 // done option to get class to fetch definitions from DB
 // done Model with SQL as input
 // done configure format 1 field out of n
@@ -27,67 +79,103 @@ use JsonStreamingParser\Parser;
 // done JSON
 // done Not sure if lookups are managed properly ( why loadfrom )
 // done some form of clean up method chain
-// TODO XML
-// TODO How to manage hierarchical JSON & XML
-// TODO some performance testing
-// TODO logging at each stage
-// TODO test for exceptions thrown and other errors
-// TODO validate input, What if format conversions fails etc.?
-// TODO parameters?
-// TODO Model group by and sum as native SQL
-// TODO Allow lookup to continue if not found
-
-// TODO Javascript web maintenance of transformation
-
-// TODO consider if can be converted into generator to allow 
-//      data to be passed onto the user.
-// TODO consider allowing iteration over dataset (may just be Transient)
-// TODO Order by for non database can't work with short definition as 
-//    no columns are defined.  Perhaps some way of delaying the check?
-// TODO Elequent
-// TODO Possible to get aggregates to work with sequence file
-//   (i.e. all employee records are sequential, so when it changes SUM()
-//   can return the new value)
-// TODO consider what orderBy and limit do in combination with setSQL
 // done consider what orderBy and limit do in combination with generateFetchSQL
 // done set delimiter and enclosing for CSV
 // done Model unit testing
-// TODO Model update not done yet
-// TODO Updateable trait?
-// TODO stats
+// done Model update
+// done Updateable trait?
+// done split and process seem to do very similar things
+// done validate input, What if format conversions fails etc.?
+// done Ensure traits used properly?
+// done Allow lookup to continue if not found
+// done Check if configure is needed (alternate is in ModelTest.testFilter()
+// done database create table (no indexes just columns)
+//		due to limitations all columns are nullable
+// done Unit testing make sure expected and actual are the right way round.
 
-// TODO Unit testing make sure expected and actual are the right way round.
+$db = new PDO("mysql:host=172.17.0.4;dbname=PlebTest",
+		"Pleb", 'RNjjJBkgduyTx7zl');
+$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$csv = <<<TESTDATA
-id,1,2
-1,2,3
-1,3,3
-TESTDATA;
+$employee = (new Model("employees3"))
+	->setDB($db)
+	->setFields( [ "emp_no" => Field::INT(),
+			"first_name" => Field::STRING(100)
+	])
+	->drop()
+	->create()
+	->validationErrors(new CSV("errors.csv"))
+	;
 
-$csvOutput = <<<TESTDATA
-id,sumqty,sumqty2
-11,12,126
-12,4,44
-
-TESTDATA;
-
-$subProc = (new Transient())
-	->modify (function(&$data) { $data['2'] += 2;
-		return Entity::CONTINUE_PROCESSING; })
-;
-		
-file_put_contents("test.csv", $csv);
-
-$input = (new CSV("test.csv"))
-
-	->process( function ($v) { return $v['id'] == 1;},
-			$subProc)
-	
-	->saveTo(new CSV("testCSVOut.csv"))
+$db->beginTransaction();
+$input = (new Generator(function ()	{
+		for ( $i = 2; $i < 400; $i++ )	{
+			yield [ "emp_no" => $i, "first_name" => "name {$i}"];
+		}
+	}))
+	->saveTo($employee)
 	->transfer();
 
-$output = file_get_contents("testCSVOut.csv");
-echo ">".$output;
+$db->commit();
+exit;	
+$input = (new CSV("test.csv"))
+	->setFields([
+			"id" => Field::INT(),
+			"first_name" => Field::STRING(),
+			"dob" => Field::Date("d/m/Y")
+	])
+// 	->setFormatedFields( [
+// 			"dob" => Field::Date("d/m/Y")
+// 	])
+// 	->map([ "id" => "emp_no",
+// 			"dob" => "birth_date"
+// 	])
+// 	->set( [ 'hire_date' => '2010/01/01',
+// 			'dept_dept_no' => "a1",
+// 			'dept_from_date' => '2010/01/02',
+// 	])
+	->saveTo($employee)
+	->transfer();
+	
+echo "Errors;".file_get_contents("errors.csv");
+exit;
+$csv = <<<TESTDATA
+id,first_name,dob
+3a,Nigell2,02/08/19661
+3,Nigell2,02/08/1966
+TESTDATA;
+
+file_put_contents("test.csv", $csv);
+
+// $db = new PDO("mysql:host=172.17.0.4;dbname=PlebTest",
+// 		"Pleb", 'RNjjJBkgduyTx7zl');
+// $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+// $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// $emp = (new Model("employees1"))
+// 	->setDB($db)
+// 	->setFields( [ "first_name" => Field::STRING(),
+// 			"birth_date" => Field::Date("Y/m/d")
+// 	])
+// 	->filter("emp_no = :emp_no");
+	
+$input = (new CSV("test.csv"))
+	->setFields( [ "emp_no" => Field::INT(),
+			"first_name" => Field::STRING(),
+			"birth_date" => Field::Date("d/m/Y")
+	])
+	->validationErrors(new CSV("errors.csv"));
+	
+$output = (new CSV("output.csv"))
+	->setFields( [ "emp_no" => Field::INT(),
+			"birth_date" => Field::Date("Y/m/d"),
+			"first_name" => Field::STRING()
+	]);
+	
+$input->saveTo($output)
+	->transfer();
+
 exit;
 $json = <<<TESTDATA
         {
@@ -101,16 +189,17 @@ file_put_contents("test.json", $json);
 
 
 $output = (new JSON("testOutput.json"))
-->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
-    "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()]);
+	->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
+	    "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()]);
 
 $input = (new JSON("test.json"))
-->setFormatedFields(["dob" => Field::Date("d/m/Y")])
-->filter ("")
-->modify (function(&$data) { $data['id'] += 2;
-return Entity::CONTINUE_PROCESSING; })
-->saveTo($output)
-->transfer();
+	->setFormatedFields(["dob" => Field::Date("d/m/Y")])
+	->filter ("")
+	->modify (function(&$data) { $data['id'] += 2;
+		return Entity::CONTINUE_PROCESSING; 
+	})
+	->saveTo($output)
+	->transfer();
 
 echo file_get_contents("testOutput.json");
 exit;

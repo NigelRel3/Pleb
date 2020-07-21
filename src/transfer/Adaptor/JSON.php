@@ -20,8 +20,6 @@ class JSON extends Entity  {
         $this->fileName = $fileName;
     }
     
-    protected function configure()  {}
-    
     public function filter( $filter )   {
         if ( is_string($filter) )    {
             $this->filter = $filter;
@@ -38,7 +36,7 @@ class JSON extends Entity  {
         return $this;
     }
     
-    public function open ( string $mode )   {
+    public function open ( string $mode ) : void   {
         if ( $this->fileHandle === null )   {
             if ( $mode == "r" && !file_exists($this->name) )    {
                 throw new \RuntimeException("File {$this->name} not found.");

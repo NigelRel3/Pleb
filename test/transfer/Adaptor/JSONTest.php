@@ -29,14 +29,10 @@ TESTDATA;
         $input = (new JSON("test.json"))
             ->setFormatedFields(["dob" => Field::Date("d/m/Y")]);
     
-        $output = new class() extends CSV   {
-            protected function configure()    {
-                $this->setName ("testCSVOut.csv" );
-                $this->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
+      	$output = (new CSV("testCSVOut.csv")) 
+      		->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
                     "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()
                 ]);
-            }
-        };
         $input
             ->filter ("")
             ->modify (function(&$data) { $data['id'] += 2; 
@@ -89,14 +85,10 @@ TESTDATA;
         $input = (new JSON("test.json"))
             ->setFormatedFields(["dob" => Field::Date("d/m/Y")]);
         
-        $output = new class() extends CSV   {
-            protected function configure()    {
-                $this->setName ("testCSVOut.csv" );
-                $this->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
+        $output = (new CSV("testCSVOut.csv"))
+            ->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
                     "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()
                 ]);
-            }
-        };
         $input
             ->filter("/\d*")
             ->setLimit(2)
@@ -150,14 +142,10 @@ TESTDATA;
         $input = (new JSON("test.json"))
             ->setFormatedFields(["dob" => Field::Date("d/m/Y")]);
         
-        $output = new class() extends CSV   {
-            protected function configure()    {
-                $this->setName ("testCSVOut.csv" );
-                $this->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
+        $output = (new CSV("testCSVOut.csv"))
+            ->setFields( [ "shoe size" => Field::INT(), "id" => Field::INT(),
                     "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()
                 ]);
-            }
-        };
         $input
             ->filter("/\d*")
             ->setLimit(2,1)
@@ -247,7 +235,7 @@ TESTDATA;
         // Use this lookup
         $set2JSON
             ->filter("/items/\d*")
-            ->lookup($set1JSON, ['set1Type'], "set1Type_")
+            ->join($set1JSON, ['set1Type'], "set1Type_")
             ->map([ "id" => "id1", "set1Type_type_id" => "set1Id",
                 "name" =>"product_name",
                 "set1Type_qty2" => "qty"
@@ -295,10 +283,12 @@ TESTDATA;
         $input
             ->filter("/items/\d*")
             ->split(function($data) { return $data['type_id'] < 13; }, 
-                   new CSV("testCSVOut.csv"))
+            	(new Transient())->saveTo(new CSV("testCSVOut.csv")))
             ->saveTo(new CSV("testCSVOut1.csv"))
             ->transfer();
         
+        $this->assertTrue(file_exists("testCSVOut.csv"));
+        $this->assertTrue(file_exists("testCSVOut1.csv"));
         $output = file_get_contents("testCSVOut.csv");
         $this->assertEquals($csvOutput, $output);
         $output = file_get_contents("testCSVOut1.csv");
@@ -332,15 +322,10 @@ type_id,name,qty,qty2
 TESTDATA;
         file_put_contents("test.json", $csv);
         
-        $input = new class() extends JSON    {
-            protected function configure()    {
-                $this->setName ("test.json" );
-                $this->setFields( [ "type_id" => Field::INT(), "name" => Field::STRING(),
+        $input = (new JSON("test.json"))->setFields( [ "type_id" => Field::INT(), "name" => Field::STRING(),
                     "qty" => Field::INT(),
                     "qty2" => Field::INT()
                 ]);
-            }
-        };
         
         $input
             ->filter("/items/\d*")
@@ -406,7 +391,7 @@ TESTDATA;
 TESTDATA;
         
         $jsonOutput = <<<TESTDATA
-[{"shoe size":4,"id":13,"dob":"01\/01\/1980","name":"Fred"}]
+[{"shoe size":"4","id":"13","dob":"01\/01\/1980","name":"Fred"}]
 TESTDATA;
         file_put_contents("test.json", $json);
         

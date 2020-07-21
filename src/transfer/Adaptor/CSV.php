@@ -19,7 +19,7 @@ class CSV extends Entity  {
         
     protected function configure() {}
     
-    public function open ( string $mode )   {
+    public function open ( string $mode ) : void   {
         if ( $this->fileHandle === null )   {
             if ( $mode == "r" && !file_exists($this->name) )    {
                 throw new \RuntimeException("File {$this->name} not found.");
@@ -71,7 +71,10 @@ class CSV extends Entity  {
     
     public function write ( array $data )   {
         if ( $this->exportFormat != null )  {
-            $data = ($this->exportFormat)($data );
+        	// If formatting fails then exit
+        	if ( ($data = ($this->exportFormat)( $data )) === false )	{
+        		return;
+        	}
         }
         // Allow if no fields set, that the whole record is written
         if ( $this->templateRecord == null )    {
@@ -98,7 +101,7 @@ class CSV extends Entity  {
         return $this;
     }
     
-    public function indexBy ( $fields )   {
+    public function indexBy ( array $fields )   {
         $indexedData = new Transient();
         $indexedData->indexBy($fields);
         

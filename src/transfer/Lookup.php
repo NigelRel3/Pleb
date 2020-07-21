@@ -4,9 +4,11 @@ namespace Pleb\transfer;
 trait Lookup {
     protected $indexBy = null;
     
-    public function indexBy ( array $fields )   {
-        return $this;
-    }
+    abstract public function indexBy ( array $fields );
     
-    protected function fetch ( array $data, array $key ) {}
+    abstract protected function fetch ( array $data, array $key );
+
+    public function isLookupable() : bool	{
+    	return true;
+    }
 }

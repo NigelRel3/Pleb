@@ -9,7 +9,7 @@ use Pleb\transfer\Entity;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-class JSONTest extends TestCase   {
+class XMLTest extends TestCase   {
     public function testModify () {
         $csv = <<<TESTDATA
 <data> 
@@ -29,14 +29,10 @@ TESTDATA;
         $input = (new XML("test.xml"))
             ->setFormatedFields(["dob" => Field::Date("d/m/Y")]);
     
-        $output = new class() extends CSV   {
-            protected function configure()    {
-                $this->setName ("testCSVOut.csv" );
-                $this->setFields( [ "shoe_size" => Field::INT(), "id" => Field::INT(),
+       	$output = (new CSV("testCSVOut.csv"))
+            ->setFields( [ "shoe_size" => Field::INT(), "id" => Field::INT(),
                     "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()
                 ]);
-            }
-        };
         $input
             ->filter ("/data")
             ->modify (function(&$data) { $data['id'] += 2; 
@@ -89,14 +85,10 @@ TESTDATA;
         $input = (new XML("test.xml"))
             ->setFormatedFields(["dob" => Field::Date("d/m/Y")]);
         
-        $output = new class() extends CSV   {
-            protected function configure()    {
-                $this->setName ("testCSVOut.csv" );
-                $this->setFields( [ "shoe_size" => Field::INT(), "id" => Field::INT(),
+     	$output = (new CSV("testCSVOut.csv"))
+            ->setFields( [ "shoe_size" => Field::INT(), "id" => Field::INT(),
                     "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()
                 ]);
-            }
-        };
         $input
             ->filter("/xml/data")
             ->setLimit(2)
@@ -150,14 +142,10 @@ TESTDATA;
         $input = (new XML("test.xml"))
             ->setFormatedFields(["dob" => Field::Date("d/m/Y")]);
         
-        $output = new class() extends CSV   {
-            protected function configure()    {
-                $this->setName ("testCSVOut.csv" );
-                $this->setFields( [ "shoe_size" => Field::INT(), "id" => Field::INT(),
+      	$output = (new CSV("testCSVOut.csv"))
+            ->setFields( [ "shoe_size" => Field::INT(), "id" => Field::INT(),
                     "dob" => Field::Date("Y/m/d"), "name" => Field::STRING()
                 ]);
-            }
-        };
         $input
             ->filter("/xml/data")
             ->setLimit(2,1)
